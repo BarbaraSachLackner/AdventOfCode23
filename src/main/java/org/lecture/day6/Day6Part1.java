@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Day6 {
+public class Day6Part1 {
 
-    private static int SPEED_PER_MILLISECOND = 1;
+    private static final int SPEED_PER_MILLISECOND = 1;
 
     public static void main(String[] args) throws IOException {
         List<String> input = Files.readAllLines(Paths.get("src", "main", "resources", "Day6_input.txt"));
-        Map<Integer, Integer> travelledPerMilliseconds = new HashMap<>();
         Map<Integer, Race> races = new HashMap<>();
         for (String line : input) {
             String[] split = line.split("\\s+");
@@ -23,26 +22,25 @@ public class Day6 {
         Map<Integer, Map<Integer, Race>> wonRaces = new HashMap<>();
         for (var entry : races.entrySet()) {
             var farthestDistance = entry.getValue().distance();
-            int totalRaceTime = entry.getValue().time();
-            for (int seconds = 1; seconds< totalRaceTime; seconds++ ) {
-                int travelledDistance = (totalRaceTime-seconds) * seconds*SPEED_PER_MILLISECOND;
+            long totalRaceTime = entry.getValue().time();
+            for (int ms = 1; ms < totalRaceTime; ms++) {
+                long travelledDistance = (totalRaceTime - ms) * ms * SPEED_PER_MILLISECOND;
                 if (travelledDistance > farthestDistance) {
                     Map<Integer, Race> travelledPerSeconds = wonRaces.getOrDefault(entry.getKey(), new HashMap<>());
-                    travelledPerSeconds.put(seconds, entry.getValue());
+                    travelledPerSeconds.put(ms, entry.getValue());
                     wonRaces.put(entry.getKey(), travelledPerSeconds);
                 }
             }
         }
 
         int sumOfRaces = 1;
-        for(var value : wonRaces.values()) {
+        for (var value : wonRaces.values()) {
             sumOfRaces *= value.size();
         }
         System.out.println();
         System.out.println(sumOfRaces);
 
     }
-
 
 
     private static void createRaces(String[] split, Map<Integer, Race> races) {

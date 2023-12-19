@@ -1,4 +1,4 @@
 package org.lecture.day6;
 
-public record Race(int time, int distance) {
+public record Race(long time, long distance) {
 }
