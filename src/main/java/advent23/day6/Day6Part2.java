@@ -17,27 +17,22 @@ public class Day6Part2 {
         Instant start = Instant.now();
         List<String> input = Files.readAllLines(Paths.get("src", "main", "resources", "Day6_input.txt"));
 
-
-        Race entry = null;
-        Race withTime = null;
+        BigInteger farthestDistance = BigInteger.ZERO;
+        BigInteger totalRaceTime= BigInteger.ZERO;
         for (String line : input) {
             String[] split = line.split("\\s+");
             if (split[0].equals("Time:")) {
-                withTime = getTime(split);
+                totalRaceTime = getTime(split);
             } else if (split[0].equals("Distance:")) {
-                entry = getDistance(split, withTime);
+                farthestDistance = getDistance(split);
             }
         }
-
-        assert entry != null;
-        BigInteger farthestDistance = BigInteger.valueOf(entry.distance());
-        BigInteger totalRaceTime = BigInteger.valueOf(entry.time());
         BigInteger finalValue = BigInteger.ZERO;
         for (BigInteger ms = BigInteger.ZERO; ms.compareTo(totalRaceTime) < 0; ms = ms.add(BigInteger.ONE)) {
             BigInteger travellingMilliSeconds = totalRaceTime.subtract(ms);
             BigInteger travelledDistance = travellingMilliSeconds.multiply(ms.multiply(BigInteger.valueOf(SPEED_PER_MILLISECOND)));
             if (travelledDistance.compareTo(farthestDistance) > 0) {
-                //symmetrisch anfang und ende, plus 1, weil index
+                //symmetrisch anfang und ende. plus 1, weil index
                 finalValue = totalRaceTime.subtract(ms.multiply(BigInteger.TWO)).add(BigInteger.ONE);
                 break;
             }
@@ -51,7 +46,7 @@ public class Day6Part2 {
     }
 
 
-    private static Race getTime(String[] split) {
+    private static BigInteger getTime(String[] split) {
         List<String> input = new ArrayList<>();
         for (String s : split) {
             if (!s.trim().isEmpty()) {
@@ -60,7 +55,6 @@ public class Day6Part2 {
         }
 
         StringBuilder timeKerning = new StringBuilder();
-        String distanceKerning = "-1";
         for (String s : input) {
             String trimmed = s.trim();
             if (!trimmed.isEmpty()) {
@@ -70,10 +64,10 @@ public class Day6Part2 {
                 timeKerning.append(trimmed);
             }
         }
-        return new Race(Long.parseLong(timeKerning.toString()), Long.parseLong(distanceKerning));
+        return BigInteger.valueOf(Long.parseLong(timeKerning.toString()));
     }
 
-    private static Race getDistance(String[] split, Race race) {
+    private static BigInteger getDistance(String[] split) {
         List<String> input = new ArrayList<>();
         for (String s : split) {
             if (!s.trim().isEmpty()) {
@@ -97,10 +91,10 @@ public class Day6Part2 {
 
         }
         if (!isTime) {
-            return new Race(race.time(), Long.parseLong(distanceKerning.toString()));
+            return BigInteger.valueOf(Long.parseLong(distanceKerning.toString()));
         }
 
-        return race;
+        return BigInteger.ZERO;
     }
 }
 
