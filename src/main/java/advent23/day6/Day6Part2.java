@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Day6Part2 {
 
     private static final int SPEED_PER_MILLISECOND = 1;
 
     public static void main(String[] args) throws IOException {
+        Instant start = Instant.now();
         List<String> input = Files.readAllLines(Paths.get("src", "main", "resources", "Day6_input.txt"));
 
 
@@ -31,18 +32,22 @@ public class Day6Part2 {
         assert entry != null;
         BigInteger farthestDistance = BigInteger.valueOf(entry.distance());
         BigInteger totalRaceTime = BigInteger.valueOf(entry.time());
-        Map<BigInteger, Race> travelledPerMS = new HashMap<>();
-        for (BigInteger ms = BigInteger.valueOf(13); ms.compareTo(totalRaceTime) < 0; ms = ms.add(BigInteger.ONE)) {
+        BigInteger finalValue = BigInteger.ZERO;
+        for (BigInteger ms = BigInteger.ZERO; ms.compareTo(totalRaceTime) < 0; ms = ms.add(BigInteger.ONE)) {
             BigInteger travellingMilliSeconds = totalRaceTime.subtract(ms);
             BigInteger travelledDistance = travellingMilliSeconds.multiply(ms.multiply(BigInteger.valueOf(SPEED_PER_MILLISECOND)));
-            System.out.println(travelledDistance);
             if (travelledDistance.compareTo(farthestDistance) > 0) {
-                travelledPerMS.put(ms, entry);
+                //symmetrisch anfang und ende, plus 1, weil index
+                finalValue = totalRaceTime.subtract(ms.multiply(BigInteger.TWO)).add(BigInteger.ONE);
+                break;
             }
         }
 
-
-        System.out.println(travelledPerMS.size());  //28101347
+        System.out.println(finalValue);
+        //28101347 - richtig!!
+        Instant stop = Instant.now();
+        long timeElapsed = Duration.between(start, stop).toMillis();
+        System.out.println("Time Elapsed:" + timeElapsed);
     }
 
 
