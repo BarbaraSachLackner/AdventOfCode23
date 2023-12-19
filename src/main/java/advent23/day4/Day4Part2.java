@@ -54,10 +54,7 @@ public class Day4Part2 {
             }
         }
 
-        int result = 0;
-        for (var values : cardCopies.values()) {
-            result += values;
-        }
+        int result = cardCopies.values().stream().mapToInt(values -> values).sum();
 
         System.out.println(result);
     }

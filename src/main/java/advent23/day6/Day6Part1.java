@@ -33,11 +33,8 @@ public class Day6Part1 {
             }
         }
 
-        int sumOfRaces = 1;
-        for (var value : wonRaces.values()) {
-            sumOfRaces *= value.size();
-        }
         System.out.println();
+        long sumOfRaces = wonRaces.values().stream().mapToLong(Map::size).reduce(1, Math::multiplyExact);
         System.out.println(sumOfRaces);
 
     }
