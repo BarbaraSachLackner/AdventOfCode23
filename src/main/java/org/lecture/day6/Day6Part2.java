@@ -28,6 +28,7 @@ public class Day6Part2 {
             }
         }
 
+        assert entry != null;
         BigInteger farthestDistance = BigInteger.valueOf(entry.distance());
         BigInteger totalRaceTime = BigInteger.valueOf(entry.time());
         Map<BigInteger, Race> travelledPerMS = new HashMap<>();
@@ -53,7 +54,7 @@ public class Day6Part2 {
             }
         }
 
-        String timeKerning = "";
+        StringBuilder timeKerning = new StringBuilder();
         String distanceKerning = "-1";
         for (String s : input) {
             String trimmed = s.trim();
@@ -61,10 +62,10 @@ public class Day6Part2 {
                 if (trimmed.equals("Time:")) {
                     continue;
                 }
-                timeKerning += trimmed;
+                timeKerning.append(trimmed);
             }
         }
-        return new Race(Long.parseLong(timeKerning), Long.parseLong(distanceKerning));
+        return new Race(Long.parseLong(timeKerning.toString()), Long.parseLong(distanceKerning));
     }
 
     private static Race getDistance(String[] split, Race race) {
@@ -75,7 +76,7 @@ public class Day6Part2 {
             }
         }
 
-        String distanceKerning = "";
+        StringBuilder distanceKerning = new StringBuilder();
         boolean isTime = false;
         for (String s : input) {
             String trimmed = s.trim();
@@ -86,12 +87,12 @@ public class Day6Part2 {
                 } else if (trimmed.equals("Distance:")) {
                     continue;
                 }
-                distanceKerning += trimmed;
+                distanceKerning.append(trimmed);
             }
 
         }
         if (!isTime) {
-            return new Race(race.time(), Long.parseLong(distanceKerning));
+            return new Race(race.time(), Long.parseLong(distanceKerning.toString()));
         }
 
         return race;
