@@ -1,4 +1,4 @@
-package org.lecture.day4;
+package advent23.day4;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,4 +1,4 @@
-package org.lecture.day6;
+package advent23.day6;
 
 import java.io.IOException;
 import java.math.BigInteger;

@@ -1,4 +1,4 @@
-package org.lecture.day6;
+package advent23.day6;
 
 public record Race(long time, long distance) {
 }
